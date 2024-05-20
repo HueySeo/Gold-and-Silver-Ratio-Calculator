@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gold and Silver Ratio Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 50px;
+        }
+        .container {
+            max-width: 400px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        label, button {
+            display: block;
+            margin-bottom: 10px;
+        }
+        input, select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+        button {
+            padding: 10px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #result {
+            font-weight: bold;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Gold and Silver Ratio Calculator</h2>
+        <label for="goldPrice">Gold Price:</label>
+        <input type="number" id="goldPrice" step="0.01" placeholder="Enter gold price">
+        <label for="goldUnit">Unit for Gold:</label>
+        <select id="goldUnit">
+            <option value="gram">Gram</option>
+            <option value="ounce">Ounce</option>
+            <option value="don">Don</option>
+        </select>
+
+        <label for="silverPrice">Silver Price:</label>
+        <input type="number" id="silverPrice" step="0.01" placeholder="Enter silver price">
+        <label for="silverUnit">Unit for Silver:</label>
+        <select id="silverUnit">
+            <option value="gram">Gram</option>
+            <option value="ounce">Ounce</option>
+            <option value="don">Don</option>
+        </select>
+
+        <button onclick="calculateRatio()">Calculate Ratio</button>
+        <p id="result"></p>
+    </div>
+
+    <script>
+        const OUNCE_TO_GRAM = 28.35;
+        const DON_TO_GRAM = 3.75;
+
+        function convertToGrams(price, unit) {
+            switch(unit) {
+                case 'ounce':
+                    return price / OUNCE_TO_GRAM;
+                case 'don':
+                    return price / DON_TO_GRAM;
+                default:
+                    return price;
+            }
+        }
+
+        function calculateRatio() {
+            const goldPrice = parseFloat(document.getElementById('goldPrice').value);
+            const goldUnit = document.getElementById('goldUnit').value;
+            const silverPrice = parseFloat(document.getElementById('silverPrice').value);
+            const silverUnit = document.getElementById('silverUnit').value;
+
+            if (isNaN(goldPrice) || isNaN(silverPrice)) {
+                document.getElementById('result').innerText = 'Please enter valid numbers for both prices.';
+                return;
+            }
+
+            const goldPriceInGrams = convertToGrams(goldPrice, goldUnit);
+            const silverPriceInGrams = convertToGrams(silverPrice, silverUnit);
+
+            if (silverPriceInGrams === 0) {
+                document.getElementById('result').innerText = 'Silver price cannot be zero.';
+                return;
+            }
+
+            const ratio = goldPriceInGrams / silverPriceInGrams;
+            document.getElementById('result').innerText = `The ratio of gold to silver is: ${ratio.toFixed(2)}`;
+        }
+    </script>
+</body>
+</html>
